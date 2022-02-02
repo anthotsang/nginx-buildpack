@@ -14,7 +14,7 @@ env_dir=$3
 
 # Versions
 NGINX_VERSION=1.21.4
-MRUBY_VERSION=v2.1.3
+MRUBY_VERSION=v2.2.4
 
 # Download URLs
 nginx_tarball_url=http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
@@ -51,7 +51,7 @@ else
   status "Compiling MRuby"
   cp ./mruby_build_config.rb $mruby_src/build_config.rb
   pushd ${mruby_src}
-  ./configure --with-ngx-src-root=${src}
+  ./configure --with-ngx-src-root=${src} --with-ngx-config-opt=--prefix=${build}
   make build_mruby --silent
   make generate_gems_config --silent
   popd

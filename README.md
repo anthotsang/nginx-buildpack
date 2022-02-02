@@ -7,8 +7,8 @@ It has been powering [General Assembly's website](https://generalassemb.ly/) for
 
 ## Features
 
-* Downloads and builds nginx 1.11.8 from source
-* Downloads and builds MRuby 1.18.8 from source
+* Downloads and builds nginx 1.21.4 from source
+* Downloads and builds MRuby 2.2.4 from source
 * Builds nginx with SSL, PCRE, and MRuby extensions
 * Caches all builds for lightning-fast deploys
 

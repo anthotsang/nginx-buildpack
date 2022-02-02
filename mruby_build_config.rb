@@ -5,7 +5,7 @@
 # into the MRuby instance built into nginx.
 #
 # More detail can be found in the ngx_mruby wiki here:
-# https://github.com/matsumoto-r/ngx_mruby/wiki/Install#1-download
+# https://github.com/matsumotory/ngx_mruby/tree/master/docs/install#1-downloading-source-from-githubcom
 MRuby::Build.new('host') do |conf|
 
   toolchain :gcc
@@ -13,33 +13,39 @@ MRuby::Build.new('host') do |conf|
   conf.gembox 'full-core'
 
   conf.cc do |cc|
-    cc.flags << '-fPIC' if ENV['BUILD_DYNAMIC_MODULE']
     cc.flags << ENV['NGX_MRUBY_CFLAGS'] if ENV['NGX_MRUBY_CFLAGS']
   end
 
+  conf.linker do |linker|
+    linker.flags << ENV['NGX_MRUBY_LDFLAGS'] if ENV['NGX_MRUBY_LDFLAGS']
+
+    # when using openssl from brew
+    if RUBY_PLATFORM =~ /darwin/i
+      linker.flags << '-L/usr/local/opt/openssl/lib -lcrypto'
+    end
+  end
+
+  #
   # Recommended for ngx_mruby
   #
-  # These are gems that ngx_mruby recommends bundling with the build in order to
-  # provide useful/expected features
-  #
-  conf.gem :github => 'iij/mruby-io'
   conf.gem :github => 'iij/mruby-env'
   conf.gem :github => 'iij/mruby-dir'
   conf.gem :github => 'iij/mruby-digest'
   conf.gem :github => 'iij/mruby-process'
-  conf.gem :github => 'iij/mruby-pack'
-  conf.gem :github => 'iij/mruby-socket'
   conf.gem :github => 'mattn/mruby-json'
   conf.gem :github => 'mattn/mruby-onig-regexp'
-  conf.gem :github => 'matsumotory/mruby-sleep'
+  conf.gem :github => 'matsumotory/mruby-redis'
+  conf.gem :github => 'matsumotory/mruby-vedis'
   conf.gem :github => 'matsumotory/mruby-userdata'
   conf.gem :github => 'matsumotory/mruby-uname'
   conf.gem :github => 'matsumotory/mruby-mutex'
   conf.gem :github => 'matsumotory/mruby-localmemcache'
+  conf.gem :mgem => 'mruby-secure-random'
 
   # ngx_mruby extended class
   conf.gem './mrbgems/ngx_mruby_mrblib'
   conf.gem './mrbgems/rack-based-api'
+  conf.gem './mrbgems/auto-ssl'
 
   # use memcached
   # conf.gem :github => 'matsumotory/mruby-memcached'
@@ -77,13 +83,9 @@ MRuby::Build.new('test') do |conf|
   conf.gem :github => 'matsumotory/mruby-simplehttp'
   conf.gem :github => 'matsumotory/mruby-httprequest'
   conf.gem :github => 'matsumotory/mruby-uname'
-  conf.gem :github => 'matsumotory/mruby-ngx-mruby-ext'
   conf.gem :github => 'matsumotory/mruby-simpletest'
   conf.gem :github => 'mattn/mruby-http'
   conf.gem :github => 'mattn/mruby-json'
-  conf.gem :github => 'iij/mruby-io'
-  conf.gem :github => 'iij/mruby-socket'
-  conf.gem :github => 'iij/mruby-pack'
   conf.gem :github => 'iij/mruby-env'
 
   # include the default GEMs
