@@ -13,8 +13,8 @@ cache_dir=$2
 env_dir=$3
 
 # Versions
-NGINX_VERSION=1.11.3
-MRUBY_VERSION=v1.18.3
+NGINX_VERSION=1.13.0
+MRUBY_VERSION=v1.19.4
 
 # Download URLs
 nginx_tarball_url=http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
@@ -44,18 +44,21 @@ else
   git clone $mruby_github_url
   pushd ${mruby_src}
   git checkout $MRUBY_VERSION
+  git submodule init
+  git submodule update
   popd
 
   status "Compiling MRuby"
   cp ./mruby_build_config.rb $mruby_src/build_config.rb
   pushd ${mruby_src}
   ./configure --with-ngx-src-root=${src}
-  make build_mruby
+  make build_mruby --silent
+  make generate_gems_config --silent
   popd
 
   status "Compiling nginx"
   pushd $src
-  ./configure --prefix=$build --with-ipv6 --with-http_stub_status_module --with-http_realip_module --with-http_ssl_module --add-module=${mruby_src} --add-module=${mruby_src}/dependence/ngx_devel_kit $NGINX_OPTIONS
+  ./configure --prefix=$build --with-http_stub_status_module --with-http_realip_module --with-http_ssl_module --add-module=${mruby_src} --add-module=${mruby_src}/dependence/ngx_devel_kit $NGINX_OPTIONS
   make install --silent
 
   # Clear out cache if our version doesn't exist

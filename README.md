@@ -7,8 +7,8 @@ It has been powering [General Assembly's website](https://generalassemb.ly/) for
 
 ## Features
 
-* Downloads and builds nginx 1.10.0 from source
-* Downloads and builds MRuby 1.17.1 from source
+* Downloads and builds nginx 1.11.8 from source
+* Downloads and builds MRuby 1.18.8 from source
 * Builds nginx with SSL, PCRE, and MRuby extensions
 * Caches all builds for lightning-fast deploys
 
@@ -44,6 +44,10 @@ After adding the buildpack, `nginx` will be available on your path. But here com
 
 Any application using this buildpack must handle all of this itself.
 
+Additionally, this buildpack includes mruby, which requires ruby to be available
+as part of the environment. When using this on Heroku, you must add the
+`heroku/ruby` buildpack to your application, and ensure the project you deploy
+has a Gemfile that installs `rake` in order to perform a successful build.
 
 ## Development
 
