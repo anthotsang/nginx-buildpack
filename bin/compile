@@ -13,12 +13,12 @@ cache_dir=$2
 env_dir=$3
 
 # Versions
-NGINX_VERSION=1.13.0
-MRUBY_VERSION=v1.19.4
+NGINX_VERSION=1.21.4
+MRUBY_VERSION=v2.1.3
 
 # Download URLs
 nginx_tarball_url=http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
-mruby_github_url=https://github.com/matsumoto-r/ngx_mruby
+mruby_github_url=https://github.com/matsumotory/ngx_mruby
 
 # Build paths
 cache=$cache_dir/build/nginx-with-mruby/${NGINX_VERSION}-mruby-${MRUBY_VERSION}
